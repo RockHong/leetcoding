@@ -1,0 +1,9 @@
+*.o
+
+# on windows, cygwin
+*.exe
+*.stackdump
+
+# vim
+*.swp
+
