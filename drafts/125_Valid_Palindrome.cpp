@@ -24,7 +24,8 @@ public:
         }
 
         auto iter = s.begin();
-        //auto riter = s.rbegin();
+        // iterator and reverse_iterator cannot compare with each other "easily"
+        // auto riter = s.rbegin();
         auto riter = --s.end();
 
         while (iter < riter) {
