@@ -19,6 +19,11 @@ using namespace std;
 class Solution {
 public:
     bool isPalindrome(string s) {
+        return Palindrome_1(s);
+    }
+    
+    // way 1
+    bool isPalindrome_1(string s) {
         if (s.empty()) {
             return true;
         }
@@ -90,6 +95,8 @@ public:
 
         return false;
     }
+
+    // way 2, use a stack and a queue
 };
 
 // tests begin

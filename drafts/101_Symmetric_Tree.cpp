@@ -25,3 +25,27 @@
 
 using namespace std;
 
+// Definition for binary tree
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+class Solution {
+public:
+    bool isSymmetric(TreeNode *root) {
+        return isSymmetric_recursive(root);
+    }
+
+    // way1, recursive version
+    bool isSymmetric_recursive(TreeNode *root) {
+    }
+};
+
+// tests begin
+TEST(Problem101Test, Test1) {
+    Solution s;
+}
+
