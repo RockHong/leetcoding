@@ -30,7 +30,8 @@ public:
         ListNode *p1 = l1;
         ListNode *p2 = l2;
         ListNode *win = NULL;
-        bool decreasing = isDecreasing(l1, l2);
+        // bool decreasing = isDecreasing(l1, l2);
+        bool decreasing = false;
         while (p1 != NULL && p2 != NULL) {
             win = getWinner(&p1, &p2, decreasing);
             p0->next = win;
@@ -41,21 +42,26 @@ public:
     }
 
     ListNode * getWinner(ListNode **p1, ListNode **p2, bool decreasing) const {
+        ListNode *win = NULL;
         if (decreasing) {
             if ((*p1)->val > (*p2)->val) {
+                win = *p1;
                 *p1 = (*p1)->next;
-                return *p1;
+                return win;
             } else {
+                win = *p2;
                 *p2 = (*p2)->next;
-                return *p2;
+                return win;
             }
         } else {
             if ((*p1)->val < (*p2)->val) {
+                win = *p1;
                 *p1 = (*p1)->next;
-                return *p1;
+                return win;
             } else {
+                win = *p2;
                 *p2 = (*p2)->next;
-                return *p2;
+                return win;
             }
         }
     }
@@ -95,11 +101,36 @@ public:
 
 // tests begin
 TEST(Problem21Test, Test1) {
+    Solution s;
+
     // null, null
+    EXPECT_EQ(NULL, s.mergeTwoLists(NULL, NULL))<<"case: null, null";
 
     // [1], null
+    ListNode n11(1);
+    EXPECT_EQ(&n11, s.mergeTwoLists(&n11, NULL))<<"case: [1], null";
 
     // [2], [1]
+    ListNode n21(2);
+    ListNode n22(1);
+    EXPECT_EQ(&n22, s.mergeTwoLists(&n21, &n22))<<"case: [2], [1]";
+
+    // [3,6], [1,9]
+    ListNode n31(3);
+    ListNode n32(6);
+    n31.next = &n32;
+    ListNode n33(1);
+    ListNode n34(9);
+    n33.next = &n34;
+    ListNode *head3 = s.mergeTwoLists(&n31, &n33);
+    EXPECT_EQ(&n33, head3);
+    EXPECT_EQ(1, head3->val);
+    head3 = head3->next;
+    EXPECT_EQ(3, head3->val);
+    head3 = head3->next;
+    EXPECT_EQ(6, head3->val);
+    head3 = head3->next;
+    EXPECT_EQ(9, head3->val);
 
     // [1,2,3], [2,3,4]
 

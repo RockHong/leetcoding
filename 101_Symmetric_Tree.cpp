@@ -20,6 +20,8 @@
  * confused what "{1,#,2,3}" means? > read more on how binary tree is serialized on OJ.
  */
 
+// Tag: easy
+
 #include "gtest/gtest.h"
 #include <iostream>
 
@@ -41,6 +43,11 @@ public:
 
     // way1, recursive version
     bool isSymmetric_recursive(TreeNode *root) {
+        if (root == NULL) {
+            return true;
+        }
+
+        return compareChildren(root->left, root->right);
     }
 
     bool compareChildren(TreeNode *left, TreeNode *right) {
@@ -65,5 +72,44 @@ public:
 // tests begin
 TEST(Problem101Test, Test1) {
     Solution s;
+
+    // null
+    EXPECT_TRUE(s.isSymmetric(NULL));
+
+    //
+    TreeNode n11(11);
+    EXPECT_TRUE(s.isSymmetric(&n11));
+
+    //
+    TreeNode n21(21);
+    TreeNode n22(22);
+    TreeNode n23(23);
+    n21.left = &n22;
+    n21.right = &n23;
+    EXPECT_FALSE(s.isSymmetric(&n21));
+    n23.val = 22;
+    EXPECT_TRUE(s.isSymmetric(&n21));
+    TreeNode n24(24);
+    n23.left = &n24;
+    EXPECT_FALSE(s.isSymmetric(&n21));
+
+    //
+    TreeNode n31(1);
+    TreeNode n32(2);
+    TreeNode n33(2);
+    TreeNode n34(3);
+    TreeNode n35(4);
+    TreeNode n36(4);
+    TreeNode n37(3);
+    n31.left = &n32;
+    n31.right = &n33;
+    n32.left = &n34;
+    n32.right = &n35;
+    n33.left = &n36;
+    n33.right = &n37;
+    EXPECT_TRUE(s.isSymmetric(&n31));
+    n36.val = 9;
+    EXPECT_FALSE(s.isSymmetric(&n31));
+
 }
 

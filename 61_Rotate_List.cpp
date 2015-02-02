@@ -58,8 +58,46 @@ public:
 
 // tests begin
 TEST(Problem61Test, Test1) {
+    Solution s;
+
     // null
+    EXPECT_EQ(NULL, s.rotateRight(NULL, 3));
+
     // [1]
+    ListNode n11(11);
+    EXPECT_EQ(&n11, s.rotateRight(&n11, 6));
+
     // [1,2,3], k=2
-    // [1,2,3], k=5
+    ListNode n21(21);
+    ListNode n22(22);
+    ListNode n23(23);
+    n21.next = &n22;
+    n22.next = &n23;
+    n23.next = NULL;
+    EXPECT_EQ(&n21, s.rotateRight(&n21, 0));
+    n21.next = &n22;
+    n22.next = &n23;
+    n23.next = NULL;
+    EXPECT_EQ(&n23, s.rotateRight(&n21, 1));
+    n21.next = &n22;
+    n22.next = &n23;
+    n23.next = NULL;
+    EXPECT_EQ(&n22, s.rotateRight(&n21, 2));
+    n21.next = &n22;
+    n22.next = &n23;
+    n23.next = NULL;
+    EXPECT_EQ(&n21, s.rotateRight(&n21, 3));
+    n21.next = &n22;
+    n22.next = &n23;
+    n23.next = NULL;
+    EXPECT_EQ(&n23, s.rotateRight(&n21, 4));
+    n21.next = &n22;
+    n22.next = &n23;
+    n23.next = NULL;
+    EXPECT_EQ(&n22, s.rotateRight(&n21, 5));
+    n21.next = &n22;
+    n22.next = &n23;
+    n23.next = NULL;
+    EXPECT_EQ(&n21, s.rotateRight(&n21, 6));
+
 }
