@@ -8,7 +8,7 @@
 
 // Tag:
 
-//#include "gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <iostream>
 #include <vector>
 
@@ -27,6 +27,7 @@ public:
         permute_bt(num, solutions, candidate);
 
         print(solutions[0]);
+        print(solutions[1]);
         return solutions;
     }
 
@@ -37,14 +38,15 @@ public:
         static auto size = num.size();
 
         if (reject(candidate)) {
-            //cout <<"reject ";
-            //print(candidate);
+            cout <<"reject ";
+            print(candidate);
             return;
         }
         if (pass(candidate, size)) {
-            //cout <<"pass" ;
-            //print(candidate);
+            cout <<"pass" ;
+            print(candidate);
             solutions.push_back(candidate);
+            cout <<"got it ";
             print(solutions.back());
             return;
         }
@@ -103,12 +105,13 @@ public:
 };
 
 // tests begin
-//TEST(Problem46Test, Test1) {
-int main(int argc, char **argv) {
+TEST(Problem46Test, Test1) {
+//int main(int argc, char **argv) {
     Solution s;
     vector<int> num;
     num.push_back(0);
     num.push_back(1);
+    //num.push_back(2);
 
     s.permute(num);
 }
