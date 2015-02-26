@@ -11,7 +11,7 @@
 
 // Tag:
 
-#include "gtest/gtest.h"
+//#include "gtest/gtest.h"
 #include <iostream>
 
 using namespace std;
@@ -19,10 +19,56 @@ using namespace std;
 class Solution {
 public:
     int removeDuplicates(int A[], int n) {
-        return removeDuplicates_1(A, n);
+        return removeDuplicates_2(A, n);
+    }
+
+    int removeDuplicates_2(int A[], int n) {
+        cout <<"------" <<endl;
+        if (A == NULL) {
+            return 0;
+        }
+
+        int curVal = A[0];
+        int nextDiffIndex;
+        int newArrayIndex = 1;
+        int newSize = n;
+        int i = 0;
+        while (i < n) {
+        //for (int i = 1; i < n; ++i) {
+            printArray(A, n);
+            nextDiffIndex = findNextDiff(A, n, curVal, i);
+            cout <<"i=" <<i <<",newArrayIndex="<<newArrayIndex<<",nextDiffIndex="<<nextDiffIndex<<",curVal="<<curVal;
+            if (nextDiffIndex < n) {
+                curVal = A[nextDiffIndex];
+            }
+            if (nextDiffIndex > i && nextDiffIndex < n) {
+                //if () {
+                    A[newArrayIndex] = A[nextDiffIndex];
+                //}
+            }
+            if (nextDiffIndex - i > 1) {
+                newSize = newSize - (nextDiffIndex - i - 1);
+            }
+        cout <<"newsize="<<newSize<<endl;
+            newArrayIndex++;
+            //i = nextDiffIndex + 1;
+            i = nextDiffIndex;
+        }
+        printArray(A,n);
+        cout <<"newsize="<<newSize<<endl;
+        return newSize;
+    }
+
+    int findNextDiff(int A[], int n, int curVal, int pos) {
+        while (A[pos] == curVal && pos < n) {
+            ++pos;
+        }
+        return pos;
     }
 
     // a little slow
+    // Lesson: when design an algorithm, think about worst case
+    // for below implementation, 1,1,2,2,3,3,... is the worst case, it runs O(n^2)
     int removeDuplicates_1(int A[], int n) {
         if (A == NULL) {
             return 0;
@@ -63,7 +109,7 @@ public:
 };
 
 // tests begin
-TEST(Problem26Test, Test1) {
+/*TEST(Problem26Test, Test1) {
     Solution s;
     int len = 0;
 
@@ -78,4 +124,27 @@ TEST(Problem26Test, Test1) {
     int a3[] = {1,1,2,3,3,5};
     len = s.removeDuplicates(a3, 6);
     EXPECT_EQ(4, len);
+
+    int a4[] = {1,2,3,4,5,6};
+    len = s.removeDuplicates(a4, 6);
+    EXPECT_EQ(6, len);
+}*/
+
+int main(int argc, char **argv) {
+    Solution s;
+    int len = 0;
+
+    int a1[] = {1};
+    len = s.removeDuplicates(a1, 1);
+    //EXPECT_EQ(1, len);
+
+    int a2[] = {1,1,1};
+    len = s.removeDuplicates(a2, 3);
+    //EXPECT_EQ(1, len);
+
+    int a3[] = {1,1,2,3,3,5};
+    len = s.removeDuplicates(a3, 6);
+    //EXPECT_EQ(4, len);
+    int a4[] = {1,2,3,4,5,6};
+    len = s.removeDuplicates(a4, 6);
 }
