@@ -12,6 +12,10 @@ Add `-std=gnu++11` to let g++ compile against google test. (For g++ 4.8.3 on cyg
 
 For example,
 
+    # g++ 4.8.3, cygwin
     g++ -std=gnu++11 -isystem /cygdrive/c/Hong/bin/gtest-1.7.0/include/ -L/cygdrive/c/Hong/bin/gtest-1.7.0/ -pthread 172_Factorial_Trailing_Zeroes.cpp gtest_main.cc -lgtest -o test_main
+    # g++ 4.9.2, cygwin
+    # remove "-pthread"
+    g++ -std=gnu++11 -isystem /cygdrive/c/Hong/bin/gtest-1.7.0/include/ -L/cygdrive/c/Hong/bin/gtest-1.7.0/ 172_Factorial_Trailing_Zeroes.cpp gtest_main.cc -lgtest -o test_main
 
 
