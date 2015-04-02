@@ -10,6 +10,8 @@ using namespace std;
 void printPerms(vector<vector<int>> perms);
 void printPerm(vector<int> perm);
 
+/*** Generation in lexicographic order ***/
+
 /*
  * http://en.wikipedia.org/wiki/Permutation#Algorithms_to_generate_permutations
  * section: Generation in lexicographic order
@@ -17,49 +19,45 @@ void printPerm(vector<int> perm);
  * @input should in ascending order
  */
 
-vector<int>::iterator findK(vector<int> currentPerm);
-vector<int>::iterator findL(vector<int> currentPerm, vector<int>::iterator iterK);
+vector<int>::iterator findK(vector<int> &currentPerm);
+vector<int>::iterator findL(vector<int> &currentPerm, vector<int>::iterator iterK);
 
 vector<vector<int>> permLexicOrder(vector<int> input) {
     vector<vector<int>> perms;
+    perms.push_back(input);
+
     auto iterK = input.end();
     do {
         iterK = findK(input);
+        if (iterK == input.end()) {
+            break;
+        }
         auto iterL = findL(input, iterK);
-        std::cout<<*iterK << " " <<*iterL <<std::endl;
-        auto tmpkkk = iterK;
         std::swap(*iterK, *iterL);
-        std::cout <<*(iterK-2) <<" "
-            <<*(iterK-1) 
-            <<" " <<*iterK 
-            //<< " " <<*iterL 
-            <<" " <<*(iterK+1)<<std::endl;
-        std::cout<<(iterK == tmpkkk) <<std::endl;
-        std::cout<<input[0] <<input[1]<<input[2]<<input[3]<<std::endl;
-        printPerm(input);
         std::reverse(++iterK, input.end());
-        printPerm(input);
         perms.push_back(input);
-        break;
-    } while (iterK != input.end());
+    } while (1);
 
     return perms;
 }
 
-vector<int>::iterator findK(vector<int> currentPerm) {
+// pass by ref. we do not want a copy on pass-in argument, which
+// makes the returned iterator meaningless
+vector<int>::iterator findK(vector<int> &currentPerm) {
     auto iter = currentPerm.rbegin();
-    while(iter != currentPerm.rend()) {
-        if (*iter > *(++iter)) {
+    while(iter + 1 != currentPerm.rend()) {
+        if (*iter > *(iter+1)) {
             // convert reverse iter to normal iter
             // rbegin().base() == end(); so remember "-1"
-            return iter.base() - 1; 
+            return (iter+1).base() - 1; 
         }
+        ++iter;
     }
 
     return currentPerm.end();
 }
 
-vector<int>::iterator findL(vector<int> currentPerm, vector<int>::iterator iterK) {
+vector<int>::iterator findL(vector<int> &currentPerm, vector<int>::iterator iterK) {
     auto iter = currentPerm.rbegin();
     while (iter != currentPerm.rend()) {
         if (*iter > *iterK) {
@@ -69,10 +67,37 @@ vector<int>::iterator findL(vector<int> currentPerm, vector<int>::iterator iterK
         }
     }
     
+    std::cout <<"error happens, terminated" <<std::endl;
     std::exit(1); // should not arrive here
     return currentPerm.end();
 }
 
+
+
+/*** Generation with minimal changes: Heap's algorithm ***/
+/*
+ * http://en.wikipedia.org/wiki/Permutation#Generation_with_minimal_changes
+ * "any two consecutive permutations in its output differ by swapping two adjacent values."
+ *
+ * "One advantage of this method is that the small amount of change \
+ *   from one permutation to the next allows the method to be implemented \
+ *   in constant time per permutation. "
+ */
+void permHeap(vector<int> &input, int n, vector<vector<int>> &output) {
+    if (n == 1) {
+        output.push_back(input);
+        return;
+    }
+
+    for (int i = 0; i < n; ++i) {
+        permHeap(input, n-1, output);
+        if (n % 2 == 1) {
+            std::swap(input[0], input[n-1]);
+        } else {
+            std::swap(input[i], input[n-1]);
+        }
+    }
+}
 
 // tests begin
 void printPerms(vector<vector<int>> perms) {
@@ -92,9 +117,14 @@ void printPerm(vector<int> perm) {
 }
 
 TEST(PermutationsCppTest, permLexicOrderTest) {
-    auto result = permLexicOrder(vector<int>({1,2,3,4}));
+    auto result = permLexicOrder({1,2,3});
     printPerms(result);
 }
 
-
+TEST(PermutationsCppTest, permHeapTest) {
+    vector<vector<int>> output;
+    vector<int> input = {1,2,3};
+    permHeap(input, 3, output);
+    printPerms(output);
+}
 

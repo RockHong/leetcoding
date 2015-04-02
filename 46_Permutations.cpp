@@ -11,6 +11,7 @@
 #include "gtest/gtest.h"
 #include <iostream>
 #include <vector>
+#include <utility>
 
 using namespace std;
 
@@ -24,12 +25,29 @@ public:
             return solutions;
         }
 
-        permute_bt(num, solutions, candidate);
+        //permute_bt(num, solutions, candidate);
+        permHeap(num, num.size(), solutions);
 
-        print(solutions[0]);
-        print(solutions[1]);
         return solutions;
     }
+
+    // Heap's alg
+    void permHeap(vector<int> &input, int n, vector<vector<int>> &output) {
+        if (n == 1) {
+            output.push_back(input);
+            return;
+        }
+
+        for (int i = 0; i < n; ++i) {
+            permHeap(input, n-1, output);
+            if (n % 2 == 1) {
+                std::swap(input[0], input[n-1]);
+            } else {
+                std::swap(input[i], input[n-1]);
+            }
+        }
+    }
+
 
     // backtracking
     // permutation is like 8-queen problem with less constraint, just being in
@@ -38,16 +56,10 @@ public:
         static auto size = num.size();
 
         if (reject(candidate)) {
-            cout <<"reject ";
-            print(candidate);
             return;
         }
         if (pass(candidate, size)) {
-            cout <<"pass" ;
-            print(candidate);
             solutions.push_back(candidate);
-            cout <<"got it ";
-            print(solutions.back());
             return;
         }
         if (candidate.size() == size) {
@@ -91,27 +103,23 @@ public:
         return true;
     }
 
-    // tmp
-    void print(const vector<int> &v) {
-        auto iter = v.begin();
-        auto end = v.end();
-        while (iter != end) {
-            cout <<*(iter++) << " ";
-        }
-        cout <<endl;
-    }
-
-    // todo: no bt version
 };
 
 // tests begin
-TEST(Problem46Test, Test1) {
-//int main(int argc, char **argv) {
-    Solution s;
-    vector<int> num;
-    num.push_back(0);
-    num.push_back(1);
-    //num.push_back(2);
+void printPerms(vector<vector<int>> perms) {
+    for (auto p: perms) {
+        for (auto i: p) {
+            std::cout<<i <<" ";
+        }
+        std::cout<<std::endl;
+    }
+}
 
-    s.permute(num);
+TEST(Problem46Test, TestPermHeap) {
+    Solution s;
+    vector<int> num = {1,2,3};
+    vector<vector<int>> perms;
+
+    perms = s.permute(num);
+    printPerms(perms);
 }

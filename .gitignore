@@ -1,9 +1,9 @@
 *.o
 
-# on windows, cygwin
 *.exe
 *.stackdump
+a.out
+.gdb_history
 
-# vim
 *.swp
 

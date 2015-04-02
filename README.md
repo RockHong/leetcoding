@@ -15,4 +15,7 @@ For example,
     # g++ 4.8.3, cygwin
     g++ -std=gnu++11 -isystem /cygdrive/c/Hong/bin/gtest-1.7.0/include/ -L/cygdrive/c/Hong/bin/gtest-1.7.0/ 172_Factorial_Trailing_Zeroes.cpp gtest_main.cc -lgtest -o test_main
 
+    # g++ (Ubuntu 4.8.2-19ubuntu1) 4.8.2
+    need add -pthread (gtest is compiled with this option also)
+
 
